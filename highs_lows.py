@@ -45,6 +45,7 @@ def plot_Data(temprature, DATE):
     # Format plot
     plt.title("Daily high temperatures, july 2014", fontsize=24)
     plt.xlabel('', fontsize=16)
+    # Draw the date labels diagonally to prevent them from overlapping
     fig.autofmt_xdate()
     plt.ylabel("Temperature (F)", fontsize=16)
     plt.tick_params(axis='both', which='major',labelsize=16)
