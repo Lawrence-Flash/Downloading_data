@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 from datetime import datetime
 
 def main():
-    filename = 'sitka_weather_2014.csv'
+    filename = 'death_valley_2014.csv'
     #header_positions(filename)
     Extract_Read_Data(filename)
     
@@ -26,14 +26,16 @@ def Extract_Read_Data(file):
         
         dates, highs, lows = [], [], []
         for row in reader:
-            current_date = datetime.strptime(row[0], "%Y-%m-%d")
-            dates.append(current_date)
-            
-            high = int(row[1])
-            highs.append(high)
-            
-            low = int(row[3])
-            lows.append(low)
+            try:
+                current_date = datetime.strptime(row[0], "%Y-%m-%d")
+                high = int(row[1])
+                low = int(row[3])
+            except ValueError:
+                print(current_date, 'missing data')
+            else:
+                dates.append(current_date)
+                highs.append(high)
+                lows.append(low)
         
         # call the function that plots the data in a line a graph plot
         plot_Data(lows,highs,dates)
@@ -43,10 +45,13 @@ def plot_Data(low_temperature,high_temprature, DATE):
     
     # Plot the data.
     fig = plt.figure(dpi=128, figsize=(10, 6))
-    plt.plot(DATE, high_temprature, c='red')
-    plt.plot(DATE, low_temperature, c='blue')
+    plt.plot(DATE, high_temprature, c='red', alpha=0.5)
+    plt.plot(DATE, low_temperature, c='blue', alpha=0.5)
+    # Adding the shadding between the graphs to show the range between each day's high and low temperatures
+    plt.fill_between(DATE, high_temprature, low_temperature, facecolor='blue', alpha=0.1)
+    
     # Format plot
-    plt.title("Daily high and low temperatures - 2023", fontsize=24)
+    plt.title("Daily high and low temperatures - 2023\nDeath Valley, SA", fontsize=20)
     plt.xlabel('', fontsize=16)
     # Draw the date labels diagonally to prevent them from overlapping
     fig.autofmt_xdate()
